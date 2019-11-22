@@ -1,7 +1,9 @@
 import io.vavr.Lazy;
+import io.vavr.Predicates;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.collection.List;
+import io.vavr.control.Either;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,11 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.API.unchecked;
 
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions"})
@@ -107,11 +114,29 @@ public class VavrTesting {
     }
 
     @Test
+    void either() {// exceptions in non unexpected cases,
+
+    }
+
+    private Either<Throwable,String> testEither(){
+
+        return Either.right("");
+    }
+
+    @Test
     void persistenCollections() {
 
-        List<String> of = List.of("12","13").foldRight(List.of("14"), (singleElement, strings) -> strings.prepend(singleElement));
+        List<String> firstList = List.of("12", "13");
 
-        System.out.println(of);
+        List<String> secondList = List.of("14");
+
+        List<String> of = firstList.foldRight(secondList, (singleElement, strings) -> strings.prepend(singleElement));
+
+        List<String> prepend = firstList.prepend("14");
+        System.out.println(prepend);
+
+        List.of("")
+                .map(unchecked(s -> new URI("")));
     }
 
     @Test
@@ -123,4 +148,14 @@ public class VavrTesting {
         System.out.println(applyFunc);
     }
 
+    @Test
+    void match() {
+        int a = 12;
+
+        String matches = Match(a).of(
+                Case($(Predicates.isIn(10, 11, 12)), "NICE"),
+                Case($(Predicates.isIn(13)), "NOT")
+        );
+
+    }
 }
