@@ -34,7 +34,7 @@ public class VavrTesting {
 
         // creating Optional:
         Optional<Integer> optionalInteger = Optional.of(value);// Optional[value]
-        Optional.of(null); // is going to fail with NPE
+        //Optional.of(null); // is going to fail with NPE
         //Optional.ofNullable(); // Optional.empty
 
         // creating Option:
@@ -60,8 +60,10 @@ public class VavrTesting {
                 .map(Optional::get)
                 .collect(Collectors.toList());
 
-        List.of(Option.of(22), Option.of(44))
-                .flatMap(integers -> integers);
+        List<Long> longs = List.of(Option.of(nullValue), Option.of(Long.MAX_VALUE))
+                .flatMap(longValues -> longValues);
+
+        System.out.println(longs);
 
     }
 
@@ -77,11 +79,11 @@ public class VavrTesting {
         }
 
         Try.of(() -> new URI(""))
-                .onFailure(System.out::println) //hierarchy
+                .onFailure(System.out::println)
                 .onFailure(NullPointerException.class, Throwable::printStackTrace)
                 .onSuccess(URI::getPath);
 
-        Try.of(() -> new URI(""))
+        Try.of(() -> new URI("")) //hierarchy
                 .onFailure(Exception.class, Throwable::printStackTrace)
                 .onFailure(RuntimeException.class, Throwable::printStackTrace);
 
@@ -90,8 +92,12 @@ public class VavrTesting {
                 .recoverWith(NullPointerException.class, e -> Try.of(() -> new URI("NNNNNN")));
     }
 
-    private void handleEx(Throwable ex) {
-        logger.log(Level.FINE, "", ex);
+    private void handleEx(Throwable ex) { // https://openjdk.java.net/jeps/305
+        if (ex instanceof Exception) {
+            logger.log(Level.FINE, "", ex);
+        } else if (ex instanceof RuntimeException) {
+
+        }
     }
 
     @Test
@@ -114,11 +120,11 @@ public class VavrTesting {
     }
 
     @Test
-    void either() {// exceptions in non unexpected cases,
+    void either() {// exceptions in non unexpected cases, java compatibility, NETTY exceptions,
 
     }
 
-    private Either<Throwable,String> testEither(){
+    private Either<Throwable, String> testEither() {
 
         return Either.right("");
     }
