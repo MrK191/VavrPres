@@ -68,7 +68,7 @@ public class VavrTesting {
     }
 
     @Test
-    void tryornot() {
+    void tryornot() {// https://github.com/spring-projects/spring-framework/issues/20361
 
         try {
             new URI("");
