@@ -117,8 +117,11 @@ public class VavrTesting {
         lazy.get();
     }
 
+    /*@Transactional
+    @Retryable*/
     @Test
     void either() {// exceptions in non unexpected cases, java compatibility, NETTY exceptions,
+
 
     }
 
