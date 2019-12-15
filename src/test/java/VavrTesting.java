@@ -22,7 +22,7 @@ import static io.vavr.API.Match;
 import static io.vavr.API.unchecked;
 
 
-@SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions"})
+@SuppressWarnings("ALL")
 public class VavrTesting {
 
     private Logger logger = Logger.getGlobal();
@@ -55,10 +55,8 @@ public class VavrTesting {
         optionalInteger.get(); //nope
         optionalInteger.orElseGet(() -> 20);
 
-        List.of(Optional.of(22), Optional.of(44))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+        List.of(Optional.of(22L), Optional.ofNullable(nullValue))
+                .map(Optional::get);
 
         List<Long> longs = List.of(Option.of(nullValue), Option.of(Long.MAX_VALUE))
                 .flatMap(longValues -> longValues);
